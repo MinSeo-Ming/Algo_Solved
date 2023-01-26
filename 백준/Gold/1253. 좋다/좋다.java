@@ -1,40 +1,53 @@
+
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int[]data;
+    static int N, left,right,count =0,find;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        long arr[] = new long[N];
-        int idx =0;
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine()," ");
+
+        data= new int[N];
+        int i =0;
         while (st.hasMoreTokens()){
-            arr[idx++] =Long.parseLong(st.nextToken());
+            data[i++]= Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(arr);
-        int count =0, sum=0, target=0;
-        for (int i = 0; i < N; i++) {
-            long find = arr[i];
-            int lt =0, rt = N-1;
-            while (lt<rt){
-                if(arr[lt]+arr[rt] ==find){
-                    if(lt!=i && rt!=i){
+        Arrays.sort(data);
+
+
+        for (int j = 0; j < N; j++) {
+            find = data[j];
+            left =0;
+            right = N -1;
+            out : while (left<right){
+                if(data[left]+data[right]==find){
+                    if(left!=j && right!=j) {
                         count++;
-                        break;
-                    }else if(i==lt){
-                        lt++;
-                    }else if(i==rt){
-                        rt--;
+                        break out;
                     }
-                }else if(arr[lt]+arr[rt] <find){
-                    lt++;
-                }else rt--;
+                    else if(left == j){
+                        left++;
+                    }else if(right==j){
+                        right--;
+                    }
+                }else if(data[left]+data[right]<find){
+                    left++;
+                }else{
+                    right--;
+                }
             }
         }
         System.out.println(count);
     }
 }
-
+/*
+10
+1 3 4 5 8 9 10 11 16 22
+ */
