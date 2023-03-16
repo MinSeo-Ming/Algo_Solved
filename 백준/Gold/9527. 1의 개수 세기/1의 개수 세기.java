@@ -1,44 +1,39 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
-    static long[] DP = new long[55];	//1의 개수 누적합 저장 배열
-    public static void main(String[] args) throws IOException {
-        //입력값 처리하는 BufferedReader
+    static long start,ed;
+    static long[] sum = new long[56];
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine()," ");
-        //A(N)과 B(M)을 저장
-        long N = Long.parseLong(st.nextToken());
-        long M = Long.parseLong(st.nextToken());
-        setDp();	//누적합 계산!
-        //A ≤ n ≤ B : B의 누적합 - (A-1)의 누적합 구하기
-        long result = calOne(M) - calOne(N-1);
-        System.out.print(result);	//A ≤ n ≤ B 의 1의 개수 출력
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        start = Long.parseLong(st.nextToken());
+        ed = Long.parseLong(st.nextToken());
+        sum[0] = 1;
+        for (int i = 1; i <= 55; i++) {
+            sum[i] = sum[i - 1] *2 +((long) 1<<i);
+            // 1의 갯수의 총합이기 때문에 이전거 *2 + 늘어난 갯수만큼 그걸 shift 연산함
+        }
+
+        System.out.println(cal(ed)-cal(start-1));
     }
-    //1~N 정수에 대한 1의 개수 구하는 함수
-    static long calOne(long N) {
-        long count = N & 1;
-        //N보다 작은 2ⁿ의 n의 최대값
-        int size = (int) (Math.log(N)/Math.log(2));
-        //비트마스킹을 이용한 1의 개수 계산 진행
-        //DP[i-1] : 000 ~ 111 개수
-        //N - (1L << i) : 지정된 1이 반복 사용될 개수 
-        // + 1 : 1000... 
-        for(int i=size;i>0;i--) {
-            if((N & (1L<<i)) != 0L) {
-                count += DP[i-1] +(N - (1L<<i) + 1);
-                N -= (1L << i);	//비트 이동시키기
+    public static long cal(long idx){
+        long result = idx & 1;
+        int log = (int)(Math.log(idx)/Math.log(2));
+
+        for (int i = log; i >0 ; i--) {
+            if((idx &((long )1<<i)) != 0){
+                result += sum[i-1] + (idx - (1L << i) +1);
+                idx -= (1L <<i); 
             }
         }
-        return count;	//1의 개수 반환
+        
+        return result;
+
     }
-    //DP[n] = DP[n-1] × 2 + 2ⁿ을 이용하여 누적합 저장하는 함수
-    static void setDp() {
-        DP[0] = 1;	//DP[0]은 1으로 초기화
-        //점화식 적용
-        //DP[i-1] << 1 : DP[n-1] × 2
-        //1L << i : 2ⁿ
-        for(int i=1;i<55;i++)
-            DP[i] = (DP[i-1] << 1) + (1L << i);
-    }
+
 }
