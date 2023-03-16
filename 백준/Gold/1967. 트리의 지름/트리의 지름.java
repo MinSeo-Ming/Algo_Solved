@@ -4,17 +4,16 @@ import java.util.*;
 
 public class Main {
     static class Node{
-        int idx;
+        int vertex;
         int weight;
-        Node(){
-        }
+        Node(){}
         Node(int idx, int weight){
-            this.idx = idx;
+            this.vertex = idx;
             this.weight = weight;
         }
     }
     static int N;
-    static boolean []visited;
+//    static boolean []visited;
     static long MAX = Long.MIN_VALUE;
     static long WEIGHT[];
     static ArrayList<Long> leafNodeList ;
@@ -23,7 +22,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         StringTokenizer st;
-        visited = new boolean[N+1];
+//        visited = new boolean[N+1];
         WEIGHT = new long[N+1];
 
         for (int i = 0; i <= N ; i++) {
@@ -42,7 +41,6 @@ public class Main {
             return;
         }
         bfs(1);
-        visited = new boolean[N+1];
 
         for (int i = 1; i < N; i++) {
             ArrayList<Node> nodes = graph.get(i);
@@ -50,7 +48,7 @@ public class Main {
                 ArrayList<Long> getWeigthSum = new ArrayList<>();
                 for(Node node : nodes){
                     leafNodeList = new ArrayList<>();
-                    dfs(node.idx);
+                    dfs(node.vertex);
                     Collections.sort(leafNodeList);
                     long getMax = leafNodeList.get(leafNodeList.size()-1);
                     getWeigthSum.add(getMax);
@@ -63,7 +61,7 @@ public class Main {
             }else if(nodes.size()==1){
 
                 leafNodeList = new ArrayList<>();
-                dfs(nodes.get(0).idx);
+                dfs(nodes.get(0).vertex);
                 Collections.sort(leafNodeList);
                 long getMax = leafNodeList.get(leafNodeList.size()-1) - WEIGHT[i];
                 MAX= Math.max(MAX,getMax);
@@ -78,27 +76,26 @@ public class Main {
 
         while (!q.isEmpty()){
             Node node = q.poll();
-            visited[node.idx]=true;
-            ArrayList<Node> nodes = graph.get(node.idx);
+//            visited[node.vertex]=true;
+            ArrayList<Node> nodes = graph.get(node.vertex);
             for(Node n: nodes){
-                if(!visited[n.idx]) {
+//                if(!visited[n.vertex]) {
                     q.add(n);
                     n.weight += node.weight;
-                    WEIGHT[n.idx] = n.weight;
-                }
+                    WEIGHT[n.vertex] = n.weight;
+//                }
             }
 
         }
     }
     static void dfs(int idx){
-        visited[idx]=true;
+//        visited[idx]=true;
         ArrayList<Node> list = graph.get(idx);
         if(list.size()==0){
             leafNodeList.add(WEIGHT[idx]);
         }
         for(Node n : list){
-            dfs(n.idx);
-
+            dfs(n.vertex);
         }
     }
 }
