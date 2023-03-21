@@ -26,24 +26,26 @@ public class Main {
 
         int idx =1;
         for (int i = 0; i <size ; i++) {
-            int cnt =0;
             if(origin[i]=='0'){
-                cnt = idx++;
-                stack.add(cnt);
+                if(!stack.isEmpty()) {
+                    int peek = stack.peek();
+                    parent[idx] = peek;
+                }
+                stack.add(idx);
+                input[i]=idx;
+                idx++;
             }else{
-                cnt = stack.pop();
-                if(!stack.isEmpty())parent[cnt] =stack.peek();
-                else parent[cnt]=cnt;
+                int pop = stack.pop();
+                input[i]=pop;
             }
-            if(i+1 ==X) X_idx =cnt;
-            if(i+1 ==Y) Y_idx =cnt;
-            input[i+1]=cnt;
         }
+        X_idx = input[X-1];
+        Y_idx = input[Y-1];
         findAncestor(X_idx,Y_idx);
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i <= size; i++) {
-            if(input[i]==REMOVE)sb.append((i)+" ");
+            if(input[i]==REMOVE)sb.append((i+1)+" ");
         }
         System.out.println(sb.toString());
     }
