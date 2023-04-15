@@ -7,13 +7,16 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input = Integer.parseInt(br.readLine());
         dfs(input,countOdd(input));
-        System.out.println(MIN+" "+MAX);
+        System.out.printf("%d %d", MIN, MAX);
     }
     public static void dfs(int n, int total){
         if(n<10) {
             MIN = Math.min(MIN, total);
             MAX = Math.max(MAX, total);
-        }else{
+        } else if (n<100) {
+            int sum = (n / 10) + (n % 10);
+            dfs(sum, total + countOdd(sum));
+        } else{
             String str = Integer.toString(n);
             int len = str.length();
             for (int i = 0; i < len-3; i++) {
