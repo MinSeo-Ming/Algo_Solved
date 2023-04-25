@@ -1,0 +1,6 @@
+-- 코드를 입력하세요
+SELECT distinct  cart_id
+from cart_products
+where name ="Milk" and  cart_id in (SELECT distinct  cart_id 
+from cart_products
+where name ="Yogurt")
