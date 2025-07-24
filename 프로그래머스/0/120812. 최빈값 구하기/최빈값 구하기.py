@@ -1,5 +1,4 @@
 def solution(array):
-    m_l=0
     count=0
     answer =0
     m = max(array)
@@ -11,7 +10,6 @@ def solution(array):
         if count <li[i]:
             count = li[i]
             answer = i
-            print(answer, count)
         elif count ==li[i]:
             answer=-1
     return answer
